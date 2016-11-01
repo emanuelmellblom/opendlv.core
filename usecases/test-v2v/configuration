@@ -75,4 +75,4 @@ odsupercomponent.pulsetimeack.exclude = odcockpit
 proxy-v2v.comboxIp = 10.42.42.61
 proxy-v2v.comboxPort = 5003
 proxy-v2v.listenPort = 5000
-
+proxy-v2v.debug = 0

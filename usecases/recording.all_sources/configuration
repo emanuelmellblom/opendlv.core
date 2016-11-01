@@ -62,6 +62,13 @@ odsupercomponent.pulsetimeack.yield = 5000 # (in microseconds)
 # List of modules (without blanks) that will not get a pulse message from odsupercomponent.
 odsupercomponent.pulsetimeack.exclude = odcockpit
 
+###############################################################################
+###############################################################################
+#
+# HEALTH
+#
+health.script = ./checkHealth.sh
+health.sleep = 60 
 
 ###############################################################################
 ###############################################################################
@@ -110,50 +117,45 @@ proxy-camera:0.camera.height = 480
 proxy-camera:0.camera.bpp = 3
 proxy-camera:0.camera.flipped = 1     # 1 = flipped image, 0 = not flipped image.
 
-#################
-proxy-camera:1.camera.debug = 0
-proxy-camera:1.camera.name = WebCam1
-proxy-camera:1.camera.id = 1 # Select here the proper ID for OpenCV
-proxy-camera:1.camera.width = 640 
-proxy-camera:1.camera.height = 480
-proxy-camera:1.camera.bpp = 3
-proxy-camera:1.camera.flipped = 0 # 1=flipped image, 0=not flipped image
+proxy-camera-axis.debug = 0       # 1 = show recording (requires X11), 0 = otherwise.
+proxy-camera-axis.name = AxisCamera0
 
-#################
-proxy-camera:2.camera.debug = 0
-proxy-camera:2.camera.name = WebCam2
-proxy-camera:2.camera.id = 2 # Select here the proper ID for OpenCV
-proxy-camera:2.camera.width = 640
-proxy-camera:2.camera.height = 480
-proxy-camera:2.camera.bpp = 3
-proxy-camera:2.camera.flipped = 0 # 1=flipped image, 0=not flipped image
+proxy-camera-axis:0.debug = 0               # 1 = show recording (requires X11), 0 = otherwise.
+proxy-camera-axis:0.name = front-left
+proxy-camera-axis:0.address = 10.42.42.90
+proxy-camera-axis:0.username = root
+proxy-camera-axis:0.password = gcdc
+proxy-camera-axis:0.width = 1280
+proxy-camera-axis:0.height = 720
+proxy-camera-axis:0.calibrationfile = /opt/opendlv.core.configuration/file.yml  # This file must be accessible from within the Docker container.
 
-#################
-proxy-camera:3.camera.debug = 0
-proxy-camera:3.camera.name = WebCam3
-proxy-camera:3.camera.id = 3 # Select here the proper ID for OpenCV
-proxy-camera:3.camera.width = 640 
-proxy-camera:3.camera.height = 480
-proxy-camera:3.camera.bpp = 3
-proxy-camera:3.camera.flipped = 0 # 1=flipped image, 0=not flipped image
+proxy-camera-axis:1.debug = 0               # 1 = show recording (requires X11), 0 = otherwise.
+proxy-camera-axis:1.name = front-right
+proxy-camera-axis:1.address = 10.42.42.91
+proxy-camera-axis:1.username = root
+proxy-camera-axis:1.password = gcdc
+proxy-camera-axis:1.width = 1280
+proxy-camera-axis:1.height = 720
+proxy-camera-axis:1.calibrationfile = /opt/opendlv.core.configuration/file.yml  # This file must be accessible from within the Docker container.
 
-#################
-proxy-camera:4.camera.debug = 0
-proxy-camera:4.camera.name = WebCam4
-proxy-camera:4.camera.id = 4 # Select here the proper ID for OpenCV
-proxy-camera:4.camera.width = 640 
-proxy-camera:4.camera.height = 480
-proxy-camera:4.camera.bpp = 3
-proxy-camera:4.camera.flipped = 0 # 1=flipped image, 0=not flipped image
+proxy-camera-axis:2.debug = 0               # 1 = show recording (requires X11), 0 = otherwise.
+proxy-camera-axis:2.name = rear-right
+proxy-camera-axis:2.address = 10.42.42.92
+proxy-camera-axis:2.username = root
+proxy-camera-axis:2.password = gcdc
+proxy-camera-axis:2.width = 1280
+proxy-camera-axis:2.height = 720
+proxy-camera-axis:2.calibrationfile = /opt/opendlv.core.configuration/file.yml  # This file must be accessible from within the Docker container.
 
-#################
-proxy-camera:5.camera.debug = 0
-proxy-camera:5.camera.name = WebCam5
-proxy-camera:5.camera.id = 5 # Select here the proper ID for OpenCV
-proxy-camera:5.camera.width = 640 
-proxy-camera:5.camera.height = 480
-proxy-camera:5.camera.bpp = 3
-proxy-camera:5.camera.flipped = 0 # 1=flipped image, 0=not flipped image
+proxy-camera-axis:3.debug = 0               # 1 = show recording (requires X11), 0 = otherwise.
+proxy-camera-axis:3.type = opencv-ip-axis
+proxy-camera-axis:3.name = rear-left
+proxy-camera-axis:3.address = 10.42.42.93
+proxy-camera-axis:3.username = root
+proxy-camera-axis:3.password = gcdc
+proxy-camera-axis:3.width = 1280
+proxy-camera-axis:3.height = 720
+proxy-camera-axis:3.calibrationfile = /opt/opendlv.core.configuration/file.yml  # This file must be accessible from within the Docker container.
 
 
 ###############################################################################
@@ -187,12 +189,15 @@ proxy-sick.record = 1  # Set to 1 to dump Lidar data in .rec format.
 #
 proxy-trimble.ip = 10.42.42.112    # Change to Trimble IP.
 proxy-trimble.port = 9999          # Change to Trimble TCP port.
+proxy-trimble.debug = 0
 
 ###############################################################################
 #
 # CONFIGURATION FOR proxy-v2v
 #
+
 proxy-v2v.comboxIp = 10.42.42.61
 proxy-v2v.comboxPort = 5003
 proxy-v2v.listenPort = 5000
+proxy-v2v.debug = 0
 

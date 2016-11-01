@@ -30,6 +30,7 @@ services:
         image: seresearch/opendavinci-ubuntu-16.04-complete:latest
         volumes:
         - .:/opt/opendlv.data
+        network_mode: host
         command: "/opt/od4/bin/odsupercomponent --cid=${CID} --verbose=1 --configuration=/opt/opendlv.data/configuration"
         
     # Micro-service for doc-camera
@@ -39,48 +40,39 @@ services:
         user: root
         devices:
         - "/dev/video0:/dev/video0"
-        links:
+        depends_on:
             - odsupercomponent
+        network_mode: host
         command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera --cid=${CID} --id=0 --freq=20"
 
-    #camera 1
-    proxy1:
+    # Micro-service for proxy-camera-axis0.
+    proxy-camera-axis0:
         build: .
-        ipc: host
-        user: root
-        devices:
-        - "/dev/video1:/dev/video1"
-        links:
+#        group_add:
+#            - video
+        depends_on:
             - odsupercomponent
-            - doc-camera
-        command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera --cid=${CID}  --id=1 --freq=20"
-        
-    #camera 2
-    proxy2:
+        user: root  # This parameter will be replaced as soon as group_add parameter is available in docker-compose, cf. https://github.com/docker/compose/pull/3709.
+        volumes:
+            - .:/opt/opendlv.core.configuration
+        network_mode: host
+        ipc: host
+        command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera-axis --cid=${CID} --freq=20 --id=0"
+ 
+    # Micro-service for proxy-camera-axis1.
+    proxy-camera-axis1:
         build: .
-        ipc: host
-        user: root
-        devices:
-        - "/dev/video2:/dev/video2"
-        links:
+#        group_add:
+#            - video
+        depends_on:
             - odsupercomponent
-            - doc-camera
-            - proxy1
-        command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera --cid=${CID}  --id=2 --freq=20"
-        
-    #camera 3
-    proxy3:
-        build: .
+        user: root  # This parameter will be replaced as soon as group_add parameter is available in docker-compose, cf. https://github.com/docker/compose/pull/3709.
+        volumes:
+            - .:/opt/opendlv.core.configuration
+        network_mode: host
         ipc: host
-        user: root
-        devices:
-        - "/dev/video3:/dev/video3"
-        links:
-            - odsupercomponent
-            - doc-camera
-            - proxy1
-            - proxy2
-        command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera --cid=${CID}  --id=3 --freq=20"
+        command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-camera-axis --cid=${CID} --freq=20 --id=1"
+
 
     #odrecorderh264
     odrecorderh264:
@@ -91,12 +83,12 @@ services:
         working_dir: "/opt/recordings"
         ipc: host
         user: root
-        links:
+        depends_on:
             - odsupercomponent
             - doc-camera
-            - proxy1
-            - proxy2
-            - proxy3
+            - proxy-camera-axis0
+            - proxy-camera-axis1
+        network_mode: host
         command: "/opt/od4/bin/odrecorderh264 --cid=${CID}"
         
     # Micro-service for health.
@@ -136,7 +128,7 @@ services:
         network_mode: "host"
         user: root
         devices:
-            - "/dev/ttyUSB0:/dev/ttyUSB0"
+            - "/dev/ttyS0:/dev/ttyUSB0"
         depends_on:
             - odsupercomponent
         command: "/opt/opendlv.core/bin/opendlv-core-system-proxy-sick --cid=${CID} --freq=10"
