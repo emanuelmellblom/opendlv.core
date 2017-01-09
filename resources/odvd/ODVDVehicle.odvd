@@ -27,3 +27,10 @@ message opendlv.proxy.ActuationRequest [id = 160] {
 message opendlv.system.HealthStatus [id = 200] {
     map<string,string> status [id = 1];
 }
+
+// message for the angle of the vanishing point
+message opendlv.legacy.VanishingPoint [id = 380] {
+    double x [id = 1];
+    double y [id = 2];
+    double angle [id = 3];
+}
